@@ -19,7 +19,15 @@ export class ProductService {
     return this._http.get(this._productUrl)
     .map((response: Response)=> <IProduct[]> response.json())
     .do( data => console.log('All ' + JSON.stringify(data)))
+    .catch(this.handleError)
+  }
+
+  getProduct(id: number): Observable<IProduct> {
+    return this._http.get(this._productUrl)
+    .map((response: Response) => response.json().filter((product: IProduct) => product.productId === id ? true : false) )
+    .do( data => console.log('Product ' + JSON.stringify(data)))
     .catch(this.handleError);
+    
   }
 
   private handleError(error: Response) {
